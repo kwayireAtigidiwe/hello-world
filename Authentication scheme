@@ -1,0 +1,53 @@
+import sys
+import numpy as np
+import sqlite3
+
+connection = sqlite3.connect("Users.db")
+
+cursor = connection.cursor()
+
+sql_command = """
+
+CREATE TABLE users_db ( 
+
+Secret_key INTEGER PRIMARY KEY,   
+
+User_name VARCHAR(50), Password);"""
+
+cursor.execute(sql_command)
+
+
+Secret_key = input('Secret_key: ')
+
+User_name = input(' User_name: ')
+
+Password = input(' Password: ')
+
+new_data = ("""INSERT INTO user_db (Secret_key, User_name,Password)
+
+    VALUES ({},'{}','{}');""".format(Secret_key, User_name,Password))
+
+cursor.execute(new_data)
+if Secret_key > '168':
+    print('Number exceeds maximum Allowed')
+else:
+  connection.commit()
+    # convert number to string
+s = str(Secret_key)
+# create list from string
+ls = list(s)
+# swap the characters in the list, for example, let's swap the digits 2 and 4 which are at indices 1 and 3 respectively
+ls[0], ls[1] = ls[1], ls[0]
+ls[1], ls[2] = ls[2], ls[1]
+# join the list elements in a string
+new_s = "".join(ls)
+# convert string to integer
+new_num = int(new_s)
+out_num1 = np.mod(new_num, 7)
+out_num2 = np.mod(new_num, 8)
+out_num3 = np.mod(new_num, 3)
+mask_num = str(out_num1) + str(out_num2) + str(out_num3)
+print(mask_num)
+
+sys.exit()
+
